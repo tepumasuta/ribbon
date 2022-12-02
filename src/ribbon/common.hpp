@@ -1,26 +1,21 @@
 #pragma once
 
-#if defined _WIN32 || defined __CYGWIN__
-  #ifdef BUILDING_DLL
-    #ifdef __GNUC__
-      #define DLL_EXPORTED __attribute__ ((dllexport))
-    #else
-      #define DLL_EXPORTED __declspec(dllexport) // Note: actually gcc seems to also supports this syntax.
-    #endif
+#ifdef RIB_PLATFORM_WINDOWS
+  #error Ribbon only supports Linux!
+  #ifdef RIB_BUILD_DLL
+    #define RIB_API __declspec(dllexport)
   #else
-    #ifdef __GNUC__
-      #define DLL_EXPORTED __attribute__ ((dllimport))
-    #else
-      #define DLL_EXPORTED __declspec(dllimport) // Note: actually gcc seems to also supports this syntax.
-    #endif
+    #define RIB_API __declspec(dllimport)
   #endif
-  #define DLL_LOCAL
 #else
-  #if __GNUC__ >= 4
-    #define DLL_EXPORTED __attribute__ ((visibility ("default")))
-    #define DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+  #ifdef RIB_PLATFORM_LINUX
+    #ifdef RIB_BUILD_DLL
+      #define RIB_API __attribute__ ((visibility ("default")))
+    #else
+      #define RIB_API __attribute__ ((visibility ("default")))
+    #endif
+    #define RIB_INTERNAL __attribute__ ((visibility ("hidden")))
   #else
-    #define DLL_EXPORTED
-    #define DLL_LOCAL
+    #error Not defined platfom!
   #endif
 #endif
