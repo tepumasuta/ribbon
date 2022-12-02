@@ -13,11 +13,14 @@ export DDEFINES=-D RIB_PLATFORM_LINUX
 export LIB:=$(BIN)/libribbon.so
 BINARIES=$(BIN)/sandbox $(LIB)
 
-.PHONY: $(SUBPROJECTS) clean
+.PHONY: pure $(SUBPROJECTS) clean
 
 sandbox: $(LIB)
 $(SUBPROJECTS):
 	$(MAKE) -C $(SRC)/$@
+
+pure:
+	$(MAKE) -C $(SRC)/sandbox
 
 $(LIB): ribbon
 
