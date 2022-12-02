@@ -4,12 +4,11 @@ export BASEDIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 export SRC:=$(BASEDIR)/src
 export OBJ:=$(BASEDIR)/obj
 export BIN:=$(BASEDIR)/bin
-export SANDBOX_VENDOR:=$(SRC)/sandbox/vendor
 export CC=g++
 export DCFLAGS=-std=c++20 -Wall -Wextra
+export DDEFINES=-D RIB_PLATFORM_LINUX
 export LIB:=$(BIN)/libribbon.so
-export LIBHEADER:=$(SANDBOX_VENDOR)/ribbon.hxx
-BINARIES=$(BIN)/sandbox $(LIB) $(BIN)/ribbon.hxx
+BINARIES=$(BIN)/sandbox $(LIB)
 
 .PHONY: $(SUBPROJECTS) clean
 

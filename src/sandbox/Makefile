@@ -1,6 +1,6 @@
 BINARY=$(BIN)/sandbox
 SRCS:=$(SRC)/sandbox
-INCLUDE:=-I$(SRCS)/vendor
+INCLUDE:=-I$(SRCS)/vendor -I$(SRC)
 LINK:=-L../../bin/ -lribbon
 OBJECTS:=sandbox.o
 SOURCED:=sandbox.o
@@ -22,7 +22,7 @@ $(addprefix $(OBJ)/,$(OBJECTS)): $$($$@_REQS)
 
 
 $(BINARY): $$(addprefix $(OBJ)/,$(OBJECTS)) $(LIBHEADER)
-	$(CC) $(DCFLAGS) $(INCLUDE) $^ -o $@ $(LINK)
+	$(CC) $(DDEFINES) $(DCFLAGS) $(INCLUDE) $^ -o $@ $(LINK)
 
 $(OBJ)/%.o:
-	$(CC) $(DCFLAGS) $(INCLUDE) -c $< -o $@ $(LINK)
+	$(CC) $(DDEFINES) $(DCFLAGS) $(INCLUDE) -c $< -o $@ $(LINK)
