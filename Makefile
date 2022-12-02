@@ -4,6 +4,9 @@ export BASEDIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 export SRC:=$(BASEDIR)/src
 export OBJ:=$(BASEDIR)/obj
 export BIN:=$(BASEDIR)/bin
+export SRCR:=$(SRC)/ribbon
+export SRCS:=$(SRC)/sandbox
+export INCLUDE:=-I$(SRCR) -I$(SRCS) -I$(SRC)
 export CC=g++
 export DCFLAGS=-std=c++20 -Wall -Wextra
 export DDEFINES=-D RIB_PLATFORM_LINUX
