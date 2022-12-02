@@ -13,11 +13,7 @@ public:
     }
 };
 
-int main()
+Ribbon::App* Ribbon::CreateApp()
 {
-    Sandbox *sandbox = new Sandbox();
-
-    sandbox->Run();
-    
-    delete sandbox;
+    return new Sandbox();
 }

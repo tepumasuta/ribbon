@@ -9,6 +9,9 @@ namespace Ribbon
         App();
         virtual ~App();
         void Run();
-    };  
+    };
+
+    // Should be defined in CLIENT
+    App* CreateApp();
 } // namespace Ribbon
 
