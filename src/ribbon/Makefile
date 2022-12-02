@@ -1,25 +1,23 @@
 BINARY=$(LIB)
 HEADER=$(BIN)/ribbon.hxx
 LIBFLAGS=-shared -Wl,-soname,$(notdir $@)
-OBJECTS:=ribbon.o
-HEADERED:=ribbon.o
-SOURCED:=ribbon.o
-HEADERNAMES=ribbon
+OBJECTS:=
+HEADERED:=
+SOURCED:=
 
 .PHONY: all sync_vendor
 
 all: $(BINARY) $(HEADER)
 
 SRCR:=$(SRC)/ribbon
-HEADERES:=$(addsuffix .hpp,$(HEADERNAMES))
 
 $(HEADER): $(SRCR)/ribbon.hxx
 	cp $< $(BIN)/ribbon.hxx
 	$(MAKE) sync_vendor
 
 sync_vendor: $(SRCR)/ribbon.hxx
-	-rm -f $(VENDOR)/$(notdir $(HEADER))
-	cp $(HEADER) $(VENDOR)/$(notdir $(HEADER))
+	-rm -f $(SANDBOX_VENDOR)/$(notdir $(HEADER))
+	cp $(HEADER) $(SANDBOX_VENDOR)/$(notdir $(HEADER))
 
 .SECONDEXPANSION:
 $(OBJ)/ribbon_REQS:=$(SRCR)/common.hpp

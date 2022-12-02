@@ -1,5 +1,6 @@
 BINARY=$(BIN)/sandbox
-INCLUDE:=-I$(VENDOR)
+SRCS:=$(SRC)/sandbox
+INCLUDE:=-I$(SRCS)/vendor
 LINK:=-L../../bin/ -lribbon
 OBJECTS:=sandbox.o
 SOURCED:=sandbox.o
@@ -9,7 +10,6 @@ HEADERED:=
 
 all: $(BINARY)
 
-SRCS:=$(SRC)/sandbox
 
 
 .SECONDEXPANSION:
