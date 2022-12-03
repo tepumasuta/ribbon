@@ -1,0 +1,3 @@
+[submodule "src/ribbon/vendor/easyloggingpp"]
+	path = src/ribbon/vendor/easyloggingpp
+	url = https://github.com/amrayn/easyloggingpp/
