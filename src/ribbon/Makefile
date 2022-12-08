@@ -10,8 +10,7 @@ EASYLOGGING:=$(VENDOR)/easyloggingpp/src
 
 .PHONY: all
 
-all: $(BINARY) $(HEADER)
-
+all: $(BINARY)
 
 $(OBJ)/app_REQS:=$(SRCR)/common.hpp
 $(OBJ)/log_REQS:=$(SRCR)/common.hpp $(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h

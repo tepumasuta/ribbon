@@ -12,6 +12,7 @@ export DCFLAGS=-std=c++20 -Wall -Wextra
 export DDEFINES=-D RIB_PLATFORM_LINUX
 export DLINK=
 export LIB:=$(BIN)/libribbon.so
+export RIBBON_HEADERS:=$(addsuffix .hpp,$(addprefix $(SRCR)/,app log entry_point))
 BINARIES=$(BIN)/sandbox $(LIB)
 
 .PHONY: pure $(SUBPROJECTS) clean clean-vendor

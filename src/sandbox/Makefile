@@ -11,14 +11,14 @@ all: $(BINARY)
 
 .SECONDEXPANSION:
 
-$(OBJ)/sandbox_REQS:=
+$(OBJ)/sandbox_REQS:=common.hpp $(RIBBON_HEADERS)
 
 $(addprefix $(OBJ)/,$(SOURCED)): $$(SRCS)/$$(notdir $$(basename $$@)).cpp
 $(addprefix $(OBJ)/,$(HEADERED)): $$(SRCS)/$$(notdir $$(basename $$@)).hpp
-$(addprefix $(OBJ)/,$(OBJECTS)): $$($$@_REQS)
+$(addprefix $(OBJ)/,$(OBJECTS)): $$($$(basename $$@)_REQS)
 
 
-$(BINARY): $$(addprefix $(OBJ)/,$(OBJECTS)) $(LIBHEADER)
+$(BINARY): $$(addprefix $$(OBJ)/,$$(OBJECTS)) $$(LIBHEADER)
 	$(CC) $(DDEFINES) $(DCFLAGS) $(DINCLUDE) $^ -o $@ $(DLINK) $(LINK)
 
 $(OBJ)/%.o:
