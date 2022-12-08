@@ -19,7 +19,7 @@ $(addprefix $(OBJ)/,$(OBJECTS)): $$($$@_REQS)
 
 
 $(BINARY): $$(addprefix $(OBJ)/,$(OBJECTS)) $(LIBHEADER)
-	$(CC) $(DDEFINES) $(DCFLAGS) $(DINCLUDE) $^ -o $@ $(LINK)
+	$(CC) $(DDEFINES) $(DCFLAGS) $(DINCLUDE) $^ -o $@ $(DLINK) $(LINK)
 
 $(OBJ)/%.o:
-	$(CC) $(DDEFINES) $(DCFLAGS) $(DINCLUDE) -c $< -o $@ $(LINK)
+	$(CC) $(DDEFINES) $(DCFLAGS) $(DINCLUDE) -c $< -o $@ $(DLINK) $(LINK)

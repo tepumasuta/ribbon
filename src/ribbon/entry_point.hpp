@@ -6,6 +6,8 @@ extern Ribbon::App* Ribbon::CreateApp();
 
 int main(int argc, char** argv)
 {
+    Ribbon::Logger::Init();
+
     auto app = Ribbon::CreateApp();
     app->Run();
     delete app;

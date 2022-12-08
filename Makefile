@@ -6,14 +6,15 @@ export OBJ:=$(BASEDIR)/obj
 export BIN:=$(BASEDIR)/bin
 export SRCR:=$(SRC)/ribbon
 export SRCS:=$(SRC)/sandbox
-export DINCLUDE:=-I$(SRCR) -I$(SRCS) -I$(SRC) -I$(SRCR)/vendor/include/plog
+export DINCLUDE:=-I$(SRCR) -I$(SRCS) -I$(SRC) -I$(SRCR)/vendor/easyloggingpp/src/
 export CC=g++
 export DCFLAGS=-std=c++20 -Wall -Wextra
 export DDEFINES=-D RIB_PLATFORM_LINUX
+export DLINK=
 export LIB:=$(BIN)/libribbon.so
 BINARIES=$(BIN)/sandbox $(LIB)
 
-.PHONY: pure $(SUBPROJECTS) clean
+.PHONY: pure $(SUBPROJECTS) clean clean-vendor
 
 sandbox: $(LIB)
 $(SUBPROJECTS):
@@ -26,4 +27,7 @@ $(LIB): ribbon
 
 clean:
 	-rm -f obj/*.o $(BINARIES)
+
+clean-vendor:
+	-rm -f obj/vendor/*.o
 
