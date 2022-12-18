@@ -13,12 +13,12 @@ namespace Ribbon
     public:
         static void Init();
 
-        inline static std::shared_ptr<el::Logger>& GetEngineLogger() { return s_EngineLogger; }
-        inline static std::shared_ptr<el::Logger>& GetClientLogger() { return s_ClientLogger; }
+        inline static el::Logger* const& GetEngineLogger() { return s_EngineLogger; }
+        inline static el::Logger* const& GetClientLogger() { return s_ClientLogger; }
         static const std::array<el::Level, 5> GetSupportedLogLevels() { return s_LogLevels; }
     private:
-        static std::shared_ptr<el::Logger> s_EngineLogger;
-        static std::shared_ptr<el::Logger> s_ClientLogger;
+        static el::Logger* s_EngineLogger;
+        static el::Logger* s_ClientLogger;
         static const std::array<el::Level, 5> s_LogLevels;
 
         static void SetPattern(el::Configurations& config, const char* pattern);

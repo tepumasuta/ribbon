@@ -1,4 +1,7 @@
-#include <app.hpp>
+#include "app.hpp"
+#include "events/event.hpp"
+#include "events/app_event.hpp"
+#include "log.hpp"
 
 namespace Ribbon
 {
@@ -12,6 +15,9 @@ namespace Ribbon
     
     void App::Run()
     {
-        while (true);
-    }    
+        WindowResizedEvent e(1280, 720);
+        RIB_TRACE << e;
+        RIB_TRACE << e.IsInCategory(Ribbon::EventCategoryType().set(static_cast<int>(Ribbon::EventCategory::App)));
+        RIB_TRACE << e.IsInCategory(Ribbon::EventCategoryType().set(static_cast<int>(Ribbon::EventCategory::Keyboard)));
+    }
 } // namespace Ribbon
