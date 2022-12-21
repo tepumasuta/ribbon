@@ -12,11 +12,11 @@
 
 namespace Ribbon
 {
-    enum class EventCategory : uint64_t
+    enum class EventCategory : uint_fast8_t
     {
         None = 0, App, Input, Keyboard, Mouse, MouseButton, SIZE
     };
-    using EventCategoryType = std::bitset<static_cast<uint64_t>(EventCategory::SIZE)>;
+    using EventCategoryType = std::bitset<static_cast<uint_fast8_t>(EventCategory::SIZE)>;
 
     class RIB_API Event
     {
@@ -42,7 +42,7 @@ namespace Ribbon
 #define EVENT_CLASS_CATEGORY(...) virtual EventCategoryType GetCategoryFlags() const override\
                                   {\
                                       EventCategoryType res;\
-                                      for (const auto& type: {__VA_ARGS__}) { res.set(static_cast<uint64_t>(type)); }\
+                                      for (const auto& type: {__VA_ARGS__}) { res.set(static_cast<uint_fast8_t>(type)); }\
                                       return res;\
                                   }
 

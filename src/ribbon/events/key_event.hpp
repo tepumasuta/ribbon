@@ -9,20 +9,20 @@ namespace Ribbon
     class RIB_API KeyEvent : public Event
     {
     public:
-        inline uint64_t GetKeyCode() const { return m_KeyCode; }
+        inline uint_fast32_t GetKeyCode() const { return m_KeyCode; }
 
         EVENT_CLASS_CATEGORY(EventCategory::Keyboard, EventCategory::Input)
     protected:
-        KeyEvent(uint64_t keycode)
+        KeyEvent(uint_fast32_t keycode)
             : m_KeyCode(keycode) {}
         
-        uint64_t m_KeyCode;
+        uint_fast32_t m_KeyCode;
     };
 
     class RIB_API KeyPressedEvent : public KeyEvent
     {
     public:
-        KeyPressedEvent(uint64_t keycode, uint64_t repeatCount)
+        KeyPressedEvent(uint_fast32_t keycode, uint_fast32_t repeatCount)
             : KeyEvent(keycode), m_RepeatCount(repeatCount) {}
         
         std::string ToString() const override
@@ -34,13 +34,13 @@ namespace Ribbon
 
         EVENT_CLASS_TYPE(KeyPressed)
     private:
-        uint64_t m_RepeatCount;
+        uint_fast32_t m_RepeatCount;
     };
     
     class RIB_API KeyReleasedEvent : KeyEvent
     {
     public:
-        KeyReleasedEvent(uint64_t keycode)
+        KeyReleasedEvent(uint_fast32_t keycode)
             : KeyEvent(keycode) {}
         
         std::string ToString() const override

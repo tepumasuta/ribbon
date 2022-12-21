@@ -9,17 +9,17 @@ namespace Ribbon
     class RIB_API MouseButtonEvent : public Event
     {
     protected:
-        MouseButtonEvent(uint8_t button)
+        MouseButtonEvent(uint_fast8_t button)
             : m_Button(button) {}
 
         EVENT_CLASS_CATEGORY(EventCategory::Input, EventCategory::Mouse, EventCategory::MouseButton)
-        uint8_t m_Button;
+        uint_fast8_t m_Button;
     };
 
     class RIB_API MouseButtonPressedEvent : public MouseButtonEvent
     {
     public:
-        MouseButtonPressedEvent(uint8_t button)
+        MouseButtonPressedEvent(uint_fast8_t button)
             : MouseButtonEvent(button) {}
 
         std::string ToString() const override
@@ -35,7 +35,7 @@ namespace Ribbon
     class RIB_API MouseButtonReleasedEvent : public MouseButtonEvent
     {
     public:
-        MouseButtonReleasedEvent(uint8_t button)
+        MouseButtonReleasedEvent(uint_fast8_t button)
             : MouseButtonEvent(button) {}
 
         std::string ToString() const override
