@@ -15,9 +15,5 @@ namespace Ribbon
     
     void App::Run()
     {
-        WindowResizedEvent e(1280, 720);
-        RIB_TRACE << e;
-        RIB_TRACE << e.IsInCategory(Ribbon::EventCategoryType().set(static_cast<int>(Ribbon::EventCategory::App)));
-        RIB_TRACE << e.IsInCategory(Ribbon::EventCategoryType().set(static_cast<int>(Ribbon::EventCategory::Keyboard)));
     }
 } // namespace Ribbon

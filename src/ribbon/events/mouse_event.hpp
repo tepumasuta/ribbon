@@ -9,17 +9,17 @@ namespace Ribbon
     class RIB_API MouseButtonEvent : public Event
     {
     protected:
-        MouseButtonEvent(u8 button)
+        MouseButtonEvent(uint8_t button)
             : m_Button(button) {}
 
         EVENT_CLASS_CATEGORY(EventCategory::Input, EventCategory::Mouse, EventCategory::MouseButton)
-        u8 m_Button;
+        uint8_t m_Button;
     };
 
     class RIB_API MouseButtonPressedEvent : public MouseButtonEvent
     {
     public:
-        MouseButtonPressedEvent(u8 button)
+        MouseButtonPressedEvent(uint8_t button)
             : MouseButtonEvent(button) {}
 
         std::string ToString() const override
@@ -35,7 +35,7 @@ namespace Ribbon
     class RIB_API MouseButtonReleasedEvent : public MouseButtonEvent
     {
     public:
-        MouseButtonReleasedEvent(u8 button)
+        MouseButtonReleasedEvent(uint8_t button)
             : MouseButtonEvent(button) {}
 
         std::string ToString() const override
@@ -51,11 +51,11 @@ namespace Ribbon
     class RIB_API MouseScrolledEvent : public Event
     {
     public:
-        MouseScrolledEvent(f64 xOffset, f64 yOffset)
+        MouseScrolledEvent(double xOffset, double yOffset)
             : m_XOffset(xOffset), m_YOffset(yOffset) {}
         
-        inline f64 GetXOffset() const { return m_XOffset; }
-        inline f64 GetYOffset() const { return m_YOffset; }
+        inline double GetXOffset() const { return m_XOffset; }
+        inline double GetYOffset() const { return m_YOffset; }
 
         std::string ToString() const override
         {
@@ -67,17 +67,17 @@ namespace Ribbon
         EVENT_CLASS_TYPE(MouseScrolled)
         EVENT_CLASS_CATEGORY(EventCategory::Input, EventCategory::Mouse)
     private:
-        f64 m_XOffset, m_YOffset;
+        double m_XOffset, m_YOffset;
     };
 
     class RIB_API MouseMovedEvent : public Event
     {
     public:
-        MouseMovedEvent(f64 x, f64 y)
+        MouseMovedEvent(double x, double y)
             : m_MouseX(x), m_MouseY(y) {}
 
-        inline f64 GetX() const { return m_MouseX; }
-        inline f64 GetY() const { return m_MouseY; }
+        inline double GetX() const { return m_MouseX; }
+        inline double GetY() const { return m_MouseY; }
 
         std::string ToString() const override
         {
@@ -89,7 +89,7 @@ namespace Ribbon
         EVENT_CLASS_TYPE(MouseMoved)
         EVENT_CLASS_CATEGORY(EventCategory::Input, EventCategory::Mouse)
     private:
-        f64 m_MouseX, m_MouseY;
+        double m_MouseX, m_MouseY;
     };
         // MouseMove, MouseScroll,
 } // namespace Ribbon

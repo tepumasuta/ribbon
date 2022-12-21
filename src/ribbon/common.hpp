@@ -1,7 +1,5 @@
 #pragma once
 
-#include "types.hpp"
-
 #ifdef RIB_PLATFORM_WINDOWS
   #error Ribbon only supports Linux!
   #ifdef RIB_BUILD_DLL

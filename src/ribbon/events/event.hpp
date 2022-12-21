@@ -8,14 +8,15 @@
 #include <functional>
 #include <bitset>
 #include <array>
+#include <cstdint>
 
 namespace Ribbon
 {
-    enum class EventCategory : u64
+    enum class EventCategory : uint64_t
     {
         None = 0, App, Input, Keyboard, Mouse, MouseButton, SIZE
     };
-    using EventCategoryType = std::bitset<static_cast<u64>(EventCategory::SIZE)>;
+    using EventCategoryType = std::bitset<static_cast<uint64_t>(EventCategory::SIZE)>;
 
     class RIB_API Event
     {
@@ -41,7 +42,7 @@ namespace Ribbon
 #define EVENT_CLASS_CATEGORY(...) virtual EventCategoryType GetCategoryFlags() const override\
                                   {\
                                       EventCategoryType res;\
-                                      for (const auto& type: {__VA_ARGS__}) { res.set(static_cast<u64>(type)); }\
+                                      for (const auto& type: {__VA_ARGS__}) { res.set(static_cast<uint64_t>(type)); }\
                                       return res;\
                                   }
 
