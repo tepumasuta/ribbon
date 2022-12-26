@@ -14,7 +14,7 @@ EASYLOGGING:=$(VENDOR)/easyloggingpp/src
 
 all: $(BINARY)
 
-$(OBJ)/app_REQS:=$(SRCR)/common.hpp $(EVENTS)/event.hpp $(UTILS)/enum.hpp
+$(OBJ)/app_REQS:=$(SRCR)/common.hpp $(EVENTS)/event.hpp $(UTILS)/category.hpp $(UTILS)/enum.hpp
 $(OBJ)/log_REQS:=$(SRCR)/common.hpp $(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h
 $(OBJ)/vendor/easylogging++_REQS:=$(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h
 .SECONDEXPANSION:
