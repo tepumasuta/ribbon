@@ -7,13 +7,14 @@ HEADERED:=app.o log.o
 SOURCED:=app.o log.o
 VENDOR:=$(SRCR)/vendor
 EVENTS:=$(SRCR)/events
+UTILS:=$(SRCR)/utils
 EASYLOGGING:=$(VENDOR)/easyloggingpp/src
 
 .PHONY: all
 
 all: $(BINARY)
 
-$(OBJ)/app_REQS:=$(SRCR)/common.hpp $(EVENTS)/event.hpp
+$(OBJ)/app_REQS:=$(SRCR)/common.hpp $(EVENTS)/event.hpp $(UTILS)/enum.hpp
 $(OBJ)/log_REQS:=$(SRCR)/common.hpp $(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h
 $(OBJ)/vendor/easylogging++_REQS:=$(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h
 .SECONDEXPANSION:
