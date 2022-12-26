@@ -10,7 +10,7 @@ export SRCR:=$(SRC)/ribbon
 export SRCS:=$(SRC)/sandbox
 export DINCLUDE:=-I$(SRCR) -I$(SRCS) -I$(SRC) -I$(SRCR)/vendor/easyloggingpp/src/
 export CC=g++
-DCFLAGS=-std=c++20 -Wall -Wextra
+DCFLAGS=-std=c++20 -Wall -Wextra -fconcepts-diagnostics-depth=2
 export DDEFINES=-D RIB_PLATFORM_LINUX
 export DLINK=
 export LIB:=$(BIN)/libribbon.so
