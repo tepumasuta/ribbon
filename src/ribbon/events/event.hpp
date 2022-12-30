@@ -1,76 +1,125 @@
 #pragma once
 
 #include "common.hpp"
+#include "utils/category.hpp"
 
-#include <typeinfo>
-#include <type_traits>
+#include <optional>
+#include <concepts>
+#include <vector>
 #include <string>
-#include <functional>
-#include <bitset>
-#include <array>
-#include <cstdint>
 
 namespace Ribbon
 {
-    enum class EventCategory : uint_fast8_t
+namespace Events
+{
+    enum class EngineEnum : uint_fast8_t
     {
         None = 0, App, Input, Keyboard, Mouse, MouseButton, SIZE
     };
-    using EventCategoryType = std::bitset<static_cast<uint_fast8_t>(EventCategory::SIZE)>;
+    using EngineCategory = Categories::Category<EngineEnum, uint_fast8_t>;
+    using namespace std::string_literals;
+    std::array EngineEnumRepresentations{
+        "None"s,
+        "App"s,
+        "Input"s,
+        "Keyboard"s,
+        "Mouse"s,
+        "MouseButton"s,
+    };
 
+    constexpr Categories::PrintableCategory<
+        EngineEnum,
+        uint_fast8_t,
+        static_cast<std::size_t>(EngineEnum::SIZE)
+    > EngineCategoryToPrintable(EngineCategory&& category)
+    {
+        return Categories::PrintableCategory<
+            EngineEnum,
+            uint_fast8_t,
+            static_cast<std::size_t>(EngineEnum::SIZE)
+        >(category, Enumerations::PrintableEnumeration<
+            EngineEnum,
+            static_cast<std::size_t>(EngineEnum::SIZE)
+         >(EngineEnum::None, EngineEnumRepresentations));
+    }
+
+    template<class E>
+    class RIB_API Listener
+    {
+    public:
+        virtual void OnEvent(E& event) = 0;
+    };
+
+    template<class E>
     class RIB_API Event
     {
-        friend class EventDispatcher;
     public:
-        virtual const char* GetName() const = 0;
-        virtual EventCategoryType GetCategoryFlags() const = 0;
-        virtual std::string ToString() const { return GetName(); }
-
-        inline bool IsInCategory(const EventCategoryType& category)
+        virtual void Happen() = 0;
+        virtual Listener<E>*& Subscribe(Listener<E>& listener) final
         {
-            return (GetCategoryFlags() & category).any();
+            m_Listeners.emplace_back(&listener);
+            return m_Listeners.back();
+        }
+        virtual void Unsubscribe(const Listener<E>& listener) final
+        {
+            for (auto& ptr: m_Listeners)
+            {
+                if (ptr && &listener == ptr)
+                {
+                    ptr = nullptr;
+                    break;
+                }
+            }
+        }
+        virtual void Unsubscribe(Listener<E>*& listener) final
+        {
+            listener = nullptr;
         }
     protected:
+        constexpr Event() {}
+        virtual void Notify(E* ptr)
+        {
+            for (std::size_t i = 0, j = 0; i < m_Listeners.size(); i++)
+            {
+                const auto& link = m_Listeners[i];
+                if (link)
+                {
+                    m_Listeners[j++] = link;
+                    link->OnEvent(*ptr);
+                }
+            }
+        }
+        std::vector<Listener<E>*> m_Listeners;
+    };
+
+    template<class E>
+    class RIB_API Retranslator : public Listener<E>, public Event<E>
+    {
+    public:
+        virtual void Happen() final = 0;
+    };
+
+
+    template<class E>
+    class RIB_API EngineEvent : public Event<E>
+    {
+    public:
+        constexpr virtual EngineCategory GetCategory() const = 0;
+        constexpr bool IsInCategory(const EngineCategory& category) const
+        {
+            return GetCategory().IsSuperset(category);
+        };
+    protected:
+        constexpr EngineEvent() {}
         bool m_Handled = false;
     };
 
-    template<typename T>
-    concept Eventlike = std::is_base_of<T, Event>::value;
-
-#define EVENT_CLASS_TYPE(type) virtual const char* GetName() const override { return #type; }
-    
-#define EVENT_CLASS_CATEGORY(...) virtual EventCategoryType GetCategoryFlags() const override\
-                                  {\
-                                      EventCategoryType res;\
-                                      for (const auto& type: {__VA_ARGS__}) { res.set(static_cast<uint_fast8_t>(type)); }\
-                                      return res;\
-                                  }
-
-    class EventDispatcher
-    {
-        template<Eventlike T>
-        using Handler = std::function<bool(T&)>;
-    public:
-        EventDispatcher(Event& e)
-            : m_Event(e) {}
-        
-        template<Eventlike T>
-        bool Dispatch(Handler<T> f)
-        {
-            if (typeid(m_Event) == typeid(T))
-            {
-                m_Event.m_Handled = f(dynamic_cast<T&>(m_Event));
-                return true;
-            }
-            return false;
-        }
-    private:
-        Event& m_Event;
-    };
-
-    inline std::ostream& operator<<(std::ostream& out, const Event& e)
-    {
-        return out << e.ToString();
-    }
+} // namespace event
 } // namespace Ribbon
 
+#define EVENT_CATEGORY(...) constexpr EngineCategory GetCategory() const override { return GetStaticCategory(); }\
+constexpr static inline EngineCategory GetStaticCategory()\
+{\
+    return EngineCategory(__VA_ARGS__);\
+}
+#define EVENT_HAPPEN() void Happen() override { Notify(this); }

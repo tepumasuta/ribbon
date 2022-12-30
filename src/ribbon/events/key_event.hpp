@@ -2,55 +2,67 @@
 
 #include "event.hpp"
 
-#include <sstream>
-
 namespace Ribbon
 {
-    class RIB_API KeyEvent : public Event
+namespace Events
+{
+    template<class E>
+    class RIB_API KeyEvent : public EngineEvent<E>
     {
     public:
-        inline uint_fast32_t GetKeyCode() const { return m_KeyCode; }
-
-        EVENT_CLASS_CATEGORY(EventCategory::Keyboard, EventCategory::Input)
+        constexpr inline uint_fast32_t GetKeyCode() const { return m_KeyCode;  }
+        EVENT_CATEGORY(EngineEnum::Keyboard, EngineEnum::Input)
     protected:
-        KeyEvent(uint_fast32_t keycode)
+        constexpr KeyEvent(uint_fast32_t keycode)
             : m_KeyCode(keycode) {}
-        
+
         uint_fast32_t m_KeyCode;
     };
 
-    class RIB_API KeyPressedEvent : public KeyEvent
+    class RIB_API KeyPressedEvent : public KeyEvent<KeyPressedEvent>
     {
+        friend std::ostream& operator<<(std::ostream& out, const KeyPressedEvent& e);
     public:
-        KeyPressedEvent(uint_fast32_t keycode, uint_fast32_t repeatCount)
+        constexpr KeyPressedEvent(uint_fast32_t keycode, uint_fast32_t repeatCount)
             : KeyEvent(keycode), m_RepeatCount(repeatCount) {}
         
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "KeyPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(KeyPressed)
+        EVENT_HAPPEN()
     private:
         uint_fast32_t m_RepeatCount;
     };
-    
-    class RIB_API KeyReleasedEvent : KeyEvent
+
+    std::ostream& operator<<(std::ostream& out, const KeyPressedEvent& e)
     {
+        return out
+            << "KeyPressedEvent{" << (e.m_Handled ? "Handled" : "Unhandled") << ", "
+            << "KeyCode: `" << e.m_KeyCode << "`, " << "Repeats: " << e.m_RepeatCount << ", "
+            << EngineCategoryToPrintable(e.GetCategory())
+            << "}";
+    }
+
+    class RIB_API KeyReleasedEvent : public KeyEvent<KeyReleasedEvent>
+    {
+        friend std::ostream& operator<<(std::ostream& out, const KeyReleasedEvent& e);
     public:
-        KeyReleasedEvent(uint_fast32_t keycode)
+        constexpr KeyReleasedEvent(uint_fast32_t keycode)
             : KeyEvent(keycode) {}
         
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "KeyReleasedEvent: " << m_KeyCode;
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(KeyReleased)
+        EVENT_HAPPEN()
     };
+
+    std::ostream& operator<<(std::ostream& out, const KeyReleasedEvent& e)
+    {
+        return out
+            << "KeyReleasedEvent{" << (e.m_Handled ? "Handled" : "Unhandled") << ", "
+            << "KeyCode: `" << e.m_KeyCode << "`, "
+            << Categories::PrintableCategory<EngineEnum, uint_fast8_t, EngineEnumRepresentations.size()>(
+                e.GetCategory(),
+                Enumerations::PrintableEnumeration<EngineEnum, EngineEnumRepresentations.size()>(
+                    EngineEnum::None,
+                    EngineEnumRepresentations
+                )
+            ) << "}";
+    }
+} // namespace Events
 } // namespace Ribbon
 

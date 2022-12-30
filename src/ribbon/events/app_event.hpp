@@ -1,148 +1,149 @@
 #pragma once
 
 #include "event.hpp"
-#include <sstream>
 
 namespace Ribbon
 {
-    class RIB_API WindowClosedEvent : public Event
+namespace Events
+{
+    class RIB_API WindowClosedEvent : public EngineEvent<WindowClosedEvent>
     {
+        friend std::ostream& operator<<(std::ostream& out, const WindowClosedEvent& e);
     public:
-        WindowClosedEvent() {}
+        constexpr WindowClosedEvent() {}
 
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "WindowClosedEvent: ";
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(WindowClosed)
-        EVENT_CLASS_CATEGORY(EventCategory::App)
+        EVENT_CATEGORY(EngineEnum::App)
+        EVENT_HAPPEN()
     };
 
-    class RIB_API WindowMovedEvent : public Event
+    std::ostream& operator<<(std::ostream& out, const WindowClosedEvent& e)
     {
+        return out << "WindowClosedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
+
+    class RIB_API WindowMovedEvent : public EngineEvent<WindowMovedEvent>
+    {
+        friend std::ostream& operator<<(std::ostream& out, const WindowMovedEvent& e);
     public:
-        WindowMovedEvent(float x, float y)
+        constexpr WindowMovedEvent(double x, double y)
             : m_WindowX(x), m_WindowY(y) {}
-        
-        inline float GetX() const { return m_WindowX; }
-        inline float GetY() const { return m_WindowY; }
 
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "WindowMovedEvent: " << GetX() << ", " << GetY();
-            return ss.str();
-        }
+        EVENT_CATEGORY(EngineEnum::App)
+        EVENT_HAPPEN()
 
-        EVENT_CLASS_TYPE(WindowMoved)
-        EVENT_CLASS_CATEGORY(EventCategory::App)
+        constexpr inline double GetX() const { return m_WindowX; }
+        constexpr inline double GetY() const { return m_WindowY; }
     private:
-        float m_WindowX, m_WindowY;
+        double m_WindowX, m_WindowY;
     };
 
-    class RIB_API WindowResizedEvent : public Event
+    std::ostream& operator<<(std::ostream& out, const WindowMovedEvent& e)
     {
+        return out << "WindowMovedEvent{"
+            << "X: " << e.GetX() << ", Y: " << e.GetY() << ", "
+            << EngineCategoryToPrintable(e.GetCategory())
+            << "}";
+    }
+
+    class RIB_API WindowResizedEvent : public EngineEvent<WindowResizedEvent>
+    {
+        friend std::ostream& operator<<(std::ostream& out, const WindowResizedEvent& e);
     public:
-        WindowResizedEvent(float width, float height)
+        constexpr WindowResizedEvent(double width, double height)
             : m_Width(width), m_Height(height) {}
 
-        inline float GetWidth() const { return m_Width; }
-        inline float GetHeight() const { return m_Height; }
+        EVENT_CATEGORY(EngineEnum::App)
+        EVENT_HAPPEN()
 
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "WindowResizedEvent: " << GetWidth() << ", " << GetHeight();
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(WindowResized)
-        EVENT_CLASS_CATEGORY(EventCategory::App)
+        constexpr inline double GetWidth() const { return m_Width; }
+        constexpr inline double GetHeight() const { return m_Height; }
     private:
-        float m_Width, m_Height;
+        double m_Width, m_Height;
     };
 
-    class RIB_API WindowSelectedEvent : public Event
+    std::ostream& operator<<(std::ostream& out, const WindowResizedEvent& e)
     {
-    public:
-        WindowSelectedEvent() {}
+        return out << "WindowMovedEvent{"
+            << "Width: " << e.GetWidth() << ", Height: " << e.GetHeight() << ", "
+            << EngineCategoryToPrintable(e.GetCategory())
+            << "}";
+    }
 
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "WindowSelectedEvent: ";
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(WindowSelected)
-        EVENT_CLASS_CATEGORY(EventCategory::App)
-    };
-
-    class RIB_API WindowUnselectedEvent : public Event
+    class RIB_API WindowSelectedEvent : public EngineEvent<WindowSelectedEvent>
     {
+        friend std::ostream& operator<<(std::ostream& out, const WindowSelectedEvent& e);
     public:
-        WindowUnselectedEvent() {}
-        
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "WindowUnselectedEvent: ";
-            return ss.str();
-        }
+        constexpr WindowSelectedEvent() {}
 
-        EVENT_CLASS_TYPE(WindowUnselected)
-        EVENT_CLASS_CATEGORY(EventCategory::App)
+        EVENT_CATEGORY(EngineEnum::App)
+        EVENT_HAPPEN()
     };
 
-    class RIB_API AppTickedEvent : public Event
+    std::ostream& operator<<(std::ostream& out, const WindowSelectedEvent& e)
     {
-    public:
-        AppTickedEvent() {}
+        return out << "WindowSelectedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
 
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "AppTickedEvent: ";
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(AppTicked)
-        EVENT_CLASS_CATEGORY(EventCategory::App)
-    };
-
-    class RIB_API AppUpdatedEvent : public Event
+    class RIB_API WindowUnselectedEvent : public EngineEvent<WindowUnselectedEvent>
     {
+        friend std::ostream& operator<<(std::ostream& out, const WindowUnselectedEvent& e);
     public:
-        AppUpdatedEvent() {}
+        constexpr WindowUnselectedEvent() {}
 
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "AppUpdatedEvent: ";
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(AppUpdated)
-        EVENT_CLASS_CATEGORY(EventCategory::App)
+        EVENT_CATEGORY(EngineEnum::App)
+        EVENT_HAPPEN()
     };
 
-    class RIB_API AppRenderedEvent : public Event
+    std::ostream& operator<<(std::ostream& out, const WindowUnselectedEvent& e)
     {
+        return out << "WindowUnselectedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
+
+    class RIB_API AppTickedEvent : public EngineEvent<AppTickedEvent>
+    {
+        friend std::ostream& operator<<(std::ostream& out, const AppTickedEvent& e);
     public:
-        AppRenderedEvent() {}
+        constexpr AppTickedEvent() {}
 
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "AppRenderedEvent: ";
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(AppRendered)
-        EVENT_CLASS_CATEGORY(EventCategory::App)
+        EVENT_CATEGORY(EngineEnum::App)
+        EVENT_HAPPEN()
     };
+
+    std::ostream& operator<<(std::ostream& out, const AppTickedEvent& e)
+    {
+        return out << "AppTickedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
+
+    class RIB_API AppUpdatedEvent : public EngineEvent<AppUpdatedEvent>
+    {
+        friend std::ostream& operator<<(std::ostream& out, const AppUpdatedEvent& e);
+    public:
+        constexpr AppUpdatedEvent() {}
+
+        EVENT_CATEGORY(EngineEnum::App)
+        EVENT_HAPPEN()
+    };
+
+    std::ostream& operator<<(std::ostream& out, const AppUpdatedEvent& e)
+    {
+        return out << "AppUpdatedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
+
+    class RIB_API AppRenderedEvent : public EngineEvent<AppRenderedEvent>
+    {
+        friend std::ostream& operator<<(std::ostream& out, const AppRenderedEvent& e);
+    public:
+        constexpr AppRenderedEvent() {}
+
+        EVENT_CATEGORY(EngineEnum::App)
+        EVENT_HAPPEN()
+    };
+
+    std::ostream& operator<<(std::ostream& out, const AppRenderedEvent& e)
+    {
+        return out << "AppRenderedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
+
+} // namespace Events
 } // namespace Ribbon
 

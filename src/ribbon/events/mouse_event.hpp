@@ -2,95 +2,92 @@
 
 #include "event.hpp"
 
-#include <sstream>
-
 namespace Ribbon
 {
-    class RIB_API MouseButtonEvent : public Event
+namespace Events
+{
+    template<class E>
+    class RIB_API MouseButtonEvent : public EngineEvent<E>
     {
     protected:
-        MouseButtonEvent(uint_fast8_t button)
+        constexpr MouseButtonEvent(uint_fast8_t button)
             : m_Button(button) {}
 
-        EVENT_CLASS_CATEGORY(EventCategory::Input, EventCategory::Mouse, EventCategory::MouseButton)
+        EVENT_CATEGORY(EngineEnum::Input, EngineEnum::Mouse, EngineEnum::MouseButton)
         uint_fast8_t m_Button;
     };
 
-    class RIB_API MouseButtonPressedEvent : public MouseButtonEvent
+    class RIB_API MouseButtonPressedEvent : public MouseButtonEvent<MouseButtonPressedEvent>
     {
+        friend std::ostream& operator<<(std::ostream& out, const MouseButtonPressedEvent& e);
     public:
-        MouseButtonPressedEvent(uint_fast8_t button)
+        constexpr MouseButtonPressedEvent(uint_fast8_t button)
             : MouseButtonEvent(button) {}
-
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "MouseButtonPressedEvent: " << m_Button;
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(MouseButtonPressed)
-    };
-
-    class RIB_API MouseButtonReleasedEvent : public MouseButtonEvent
-    {
-    public:
-        MouseButtonReleasedEvent(uint_fast8_t button)
-            : MouseButtonEvent(button) {}
-
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "MouseButtonReleasedEvent: " << m_Button;
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(MouseButtonReleased)
-    };
-
-    class RIB_API MouseScrolledEvent : public Event
-    {
-    public:
-        MouseScrolledEvent(double xOffset, double yOffset)
-            : m_XOffset(xOffset), m_YOffset(yOffset) {}
         
-        inline double GetXOffset() const { return m_XOffset; }
-        inline double GetYOffset() const { return m_YOffset; }
+        EVENT_HAPPEN()
+    };
 
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
-            return ss.str();
-        }
+    std::ostream& operator<<(std::ostream& out, const MouseButtonPressedEvent& e)
+    {
+        return out << "MouseButtonPressedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
 
-        EVENT_CLASS_TYPE(MouseScrolled)
-        EVENT_CLASS_CATEGORY(EventCategory::Input, EventCategory::Mouse)
+    class RIB_API MouseButtonReleasedEvent : public MouseButtonEvent<MouseButtonReleasedEvent>
+    {
+        friend std::ostream& operator<<(std::ostream& out, const MouseButtonReleasedEvent& e);
+    public:
+        constexpr MouseButtonReleasedEvent(uint_fast8_t button)
+            : MouseButtonEvent(button) {}
+        
+        EVENT_HAPPEN()
+    };
+
+    std::ostream& operator<<(std::ostream& out, const MouseButtonReleasedEvent& e)
+    {
+        return out << "MouseButtonReleasedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
+
+    class RIB_API MouseScrolledEvent : public EngineEvent<MouseScrolledEvent>
+    {
+        friend std::ostream& operator<<(std::ostream& out, const MouseScrolledEvent& e);
+    public:
+        constexpr MouseScrolledEvent(double xOffset, double YOffset)
+            : m_XOffset(xOffset), m_YOffset(YOffset) {}
+
+        constexpr inline double GetXOffset() const { return m_XOffset; }
+        constexpr inline double GetYOffset() const { return m_YOffset; }
+
+        EVENT_CATEGORY(EngineEnum::Input, EngineEnum::Mouse)
+        EVENT_HAPPEN()
     private:
         double m_XOffset, m_YOffset;
     };
-
-    class RIB_API MouseMovedEvent : public Event
+    
+    std::ostream& operator<<(std::ostream& out, const MouseScrolledEvent& e)
     {
+        return out << "MouseScrolledEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
+
+    class RIB_API MouseMovedEvent : public EngineEvent<MouseMovedEvent>
+    {
+        friend std::ostream& operator<<(std::ostream& out, const MouseMovedEvent& e);
     public:
-        MouseMovedEvent(double x, double y)
-            : m_MouseX(x), m_MouseY(y) {}
+        constexpr MouseMovedEvent(double xOffset, double YOffset)
+            : m_MouseX(xOffset), m_MouseY(YOffset) {}
 
-        inline double GetX() const { return m_MouseX; }
-        inline double GetY() const { return m_MouseY; }
+        constexpr inline double GetX() const { return m_MouseX; }
+        constexpr inline double GetY() const { return m_MouseY; }
 
-        std::string ToString() const override
-        {
-            std::stringstream ss;
-            ss << "MouseMovedEvent: " << GetX() << ", " << GetY();
-            return ss.str();
-        }
-
-        EVENT_CLASS_TYPE(MouseMoved)
-        EVENT_CLASS_CATEGORY(EventCategory::Input, EventCategory::Mouse)
+        EVENT_CATEGORY(EngineEnum::Input, EngineEnum::Mouse)
+        EVENT_HAPPEN()
     private:
         double m_MouseX, m_MouseY;
     };
-        // MouseMove, MouseScroll,
+    
+    std::ostream& operator<<(std::ostream& out, const MouseMovedEvent& e)
+    {
+        return out << "MouseMovedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
+    }
+} // namespace Events
 } // namespace Ribbon
 
