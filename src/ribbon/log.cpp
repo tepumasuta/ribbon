@@ -1,7 +1,5 @@
 #include "log.hpp"
 
-#define ELPP_THREAD_SAFE
-#define ELPP_UNICODE
 INITIALIZE_EASYLOGGINGPP
 namespace Ribbon
 {
