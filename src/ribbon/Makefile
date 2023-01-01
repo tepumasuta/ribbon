@@ -14,7 +14,7 @@ EVENTS:=$(SRCR)/events
 UTILS:=$(SRCR)/utils
 EASYLOGGING:=$(VENDOR)/easyloggingpp/src
 PCHSRC:=$(SRCR)/pch
-ifeq ($(OS),LINUX)
+ifeq ($(CC),g++)
 PCHOBJ:=$(PCHSRC)/ribpch.hpp.gch
 endif
 
@@ -39,7 +39,7 @@ $(BINARY): $$(addprefix $(OBJ)/,$(OBJECTS))
 $(OBJ)/%.o:
 	$(CC) $(DDEFINES) $(DEFINES) $(DCFLAGS) -fPIC -c $(DINCLUDE) $(INCLUDE) $< -o $@ $(DLINK)
 
-ifeq ($(OS),LINUX)
+ifeq ($(CC),g++)
 $(PCHOBJ): $(PCHSRC)/ribpch.hpp
 	$(CC) $(DDEFINES) $(DEFINES) $(DCFLAGS) -fPIC -c $(DINCLUDE) $(INCLUDE) $< -o $@
 endif
