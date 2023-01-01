@@ -1,3 +1,5 @@
+include ${CONFIGFILE}
+
 BINARY=$(BIN)/sandbox
 LINK:=-L../../bin/ -lribbon
 OBJECTS:=sandbox.o

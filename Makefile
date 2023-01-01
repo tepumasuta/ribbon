@@ -9,7 +9,10 @@ export BIN:=$(BASEDIR)/bin
 export SRCR:=$(SRC)/ribbon
 export SRCS:=$(SRC)/sandbox
 export DINCLUDE:=-I$(SRCR) -I$(SRCS) -I$(SRC) -I$(SRCR)/vendor/easyloggingpp/src/
+ifeq ($(OS),LINUX)
 export CC=g++
+endif
+export CONFIGFILE:=$(BASEDIR)/$(CONFIG)
 DCFLAGS=-std=c++20 -Wall -Wextra -fconcepts-diagnostics-depth=2
 DCFLAGS+=$(LOG_FLAGS)
 export DDEFINES=-D RIB_PLATFORM_LINUX
@@ -43,7 +46,9 @@ clean:
 clean-vendor:
 	-rm -f obj/vendor/*.o
 
+ifeq ($(OS),LINUX)
 clean-pch:
 	-rm -f $(SRCR)/pch/*.gch
+endif
 
 clean-all: clean clean-vendor clean-pch
