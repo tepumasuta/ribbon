@@ -9,10 +9,12 @@ VENDOR:=$(SRCR)/vendor
 EVENTS:=$(SRCR)/events
 UTILS:=$(SRCR)/utils
 EASYLOGGING:=$(VENDOR)/easyloggingpp/src
+PCHSRC:=$(SRCR)/pch
+PCHOBJ:=$(PCHSRC)/ribpch.hpp.gch
 
 .PHONY: all
 
-all: $(BINARY)
+all: $(PCHOBJ) $(BINARY)
 
 $(OBJ)/app_REQS:=$(SRCR)/common.hpp $(EVENTS)/event.hpp $(UTILS)/category.hpp $(UTILS)/enum.hpp
 $(OBJ)/log_REQS:=$(SRCR)/common.hpp $(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h
@@ -28,3 +30,6 @@ $(BINARY): $$(addprefix $(OBJ)/,$(OBJECTS))
 
 $(OBJ)/%.o:
 	$(CC) $(DDEFINES) $(DEFINES) $(DCFLAGS) -fPIC -c $(DINCLUDE) $(INCLUDE) $< -o $@ $(DLINK)
+
+$(PCHOBJ): $(PCHSRC)/ribpch.hpp
+	$(CC) $(DDEFINES) $(DEFINES) $(DCFLAGS) -fPIC -c $(DINCLUDE) $(INCLUDE) $< -o $@

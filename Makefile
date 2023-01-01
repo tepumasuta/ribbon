@@ -26,7 +26,7 @@ DCFLAGS+=-O2 -g0
 endif
 export DCFLAGS
 
-.PHONY: pure $(SUBPROJECTS) clean clean-vendor
+.PHONY: pure $(SUBPROJECTS) clean clean-vendor clean-pch clean-all
 
 sandbox: $(LIB)
 $(SUBPROJECTS):
@@ -43,3 +43,7 @@ clean:
 clean-vendor:
 	-rm -f obj/vendor/*.o
 
+clean-pch:
+	-rm -f $(SRCR)/pch/*.gch
+
+clean-all: clean clean-vendor clean-pch

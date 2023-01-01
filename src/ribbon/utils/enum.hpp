@@ -2,10 +2,7 @@
 
 #include "common.hpp"
 
-#include <string>
-#include <array>
-#include <ostream>
-#include <concepts>
+#include "pch/ribpch.hpp"
 
 namespace Ribbon
 {

@@ -3,7 +3,7 @@
 #include "common.hpp"
 #include "enum.hpp"
 
-#include <bitset>
+#include "pch/ribpch.hpp"
 
 namespace Ribbon
 {
