@@ -7,4 +7,6 @@
 #include <string>
 #include <ostream>
 
+#include "log.hpp"
+
 #include <easylogging++.h>
