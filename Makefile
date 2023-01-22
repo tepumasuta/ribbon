@@ -28,6 +28,9 @@ ifeq ($(TARGET),RELEASE)
 DCFLAGS+=-O2 -g0
 endif
 export DCFLAGS
+ifeq ($(ENABLE_ASSERTS),YES)
+DDEFINES+=-D RIB_ENABLE_ASSERTS
+endif
 
 .PHONY: pure $(SUBPROJECTS) clean clean-vendor clean-pch clean-all
 
