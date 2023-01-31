@@ -6,6 +6,7 @@
 #include <bitset>
 #include <string>
 #include <ostream>
+#include <functional>
 
 #include "log.hpp"
 
