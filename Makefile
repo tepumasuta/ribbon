@@ -11,12 +11,13 @@ export SRCS:=$(SRC)/sandbox
 export DINCLUDE:=-I$(SRCR) -I$(SRCS) -I$(SRC) -I$(SRCR)/vendor/easyloggingpp/src/
 ifeq ($(OS),LINUX)
 export CC:=g++
+export PLATFORMOBJ=$(OBJ)/platform/linux
 endif
 export CONFIGFILE:=$(BASEDIR)/$(CONFIG)
 DCFLAGS=-std=c++20 -Wall -Wextra -fconcepts-diagnostics-depth=2
 DCFLAGS+=$(LOG_FLAGS)
 export DDEFINES=-D RIB_PLATFORM_LINUX
-export DLINK=
+export DLINK=-lglfw3 -lX11
 export LIB:=$(BIN)/libribbon.so
 export RIBBON_HEADERS:=$(addsuffix .hpp,$(addprefix $(SRCR)/,app log entry_point))
 BINARIES=$(BIN)/sandbox $(LIB)
@@ -32,10 +33,10 @@ ifeq ($(ENABLE_ASSERTS),YES)
 DDEFINES+=-D RIB_ENABLE_ASSERTS
 endif
 
-.PHONY: pure $(SUBPROJECTS) clean clean-vendor clean-pch clean-all
+.PHONY: pure $(SUBPROJECTS) clean clean-vendor clean-pch clean-all create-obj-infrastructure
 
 sandbox: $(LIB)
-$(SUBPROJECTS):
+$(SUBPROJECTS): create-obj-infrastructure
 	$(MAKE) -C $(SRC)/$@
 
 pure:
@@ -44,7 +45,7 @@ pure:
 $(LIB): ribbon
 
 clean:
-	-rm -f obj/*.o $(BINARIES)
+	-rm -f obj/*.o obj/events/*.o $(PLATFORMOBJ)/*.o $(BINARIES)
 
 clean-vendor:
 	-rm -f obj/vendor/*.o
@@ -55,3 +56,10 @@ clean-pch:
 endif
 
 clean-all: clean clean-vendor clean-pch
+
+create-obj-infrastructure:
+	if [ ! -d "$(OBJ)" ]; then mkdir "$(OBJ)"; fi
+	if [ ! -d "$(OBJ)/vendor" ]; then mkdir "$(OBJ)/vendor"; fi
+	if [ ! -d "$(OBJ)/events" ]; then mkdir "$(OBJ)/events"; fi
+	if [ ! -d "$(OBJ)/platform" ]; then mkdir "$(OBJ)/platform"; fi
+	if [ ! -d "$(PLATFORMOBJ)" ]; then mkdir "$(PLATFORMOBJ)"; fi

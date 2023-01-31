@@ -1,34 +1,45 @@
 include ${CONFIGFILE}
 
 DEFINES=-D RIB_BUILD_DLL
-INCLUDE=
 BINARY=$(LIB)
 LIBFLAGS=-shared -Wl,-soname,$(notdir $@)
-RIBOBJS:=app.o log.o
+RIBOBJS=app.o log.o events/event_printer.o
 VENDOROBJS:=vendor/easylogging++.o
-OBJECTS:=$(RIBOBJS) $(VENDOROBJS)
 HEADERED:=app.o log.o
-SOURCED:=app.o log.o
+SOURCED:=app.o log.o events/event_printer.o
 VENDOR:=$(SRCR)/vendor
 EVENTS:=$(SRCR)/events
 UTILS:=$(SRCR)/utils
 EASYLOGGING:=$(VENDOR)/easyloggingpp/src
+INCLUDE:=-I$(VENDOR)/glfw/include/
 PCHSRC:=$(SRCR)/pch
+WINDOWHEADERS=$(SRCR)/window.hpp
 ifeq ($(CC),g++)
 PCHOBJ:=$(PCHSRC)/ribpch.hpp.gch
 endif
+ifeq ($(OS),LINUX)
+PLATFORMPREFIX:=platform/linux
+PLATFORMSRC=$(SRCR)/$(PLATFORMPREFIX)
+WINDOWHEADERS+=$(PLATFORMSRC)/linux_window.hpp
+RIBOBJS+=$(PLATFORMPREFIX)/linux_window.o
+HEADERED+=$(PLATFORMPREFIX)/linux_window.o
+SOURCED+=$(PLATFORMPREFIX)/linux_window.o
+endif
+OBJECTS:=$(RIBOBJS) $(VENDOROBJS)
 
 .PHONY: all
 
 all: $(PCHOBJ) $(BINARY)
 
-$(OBJ)/app_REQS:=$(SRCR)/common.hpp $(EVENTS)/event.hpp $(UTILS)/category.hpp $(UTILS)/enum.hpp 
+$(OBJ)/app_REQS:=$(SRCR)/common.hpp $(EVENTS)/event.hpp $(UTILS)/category.hpp $(UTILS)/enum.hpp $(WINDOWHEADERS)
 $(OBJ)/log_REQS:=$(SRCR)/common.hpp $(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h
 $(OBJ)/vendor/easylogging++_REQS:=$(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h
+$(OBJ)/platform/linux/linux_window_REQS:=$(SRCR)/window.hpp
 .SECONDEXPANSION:
 
-$(addprefix $(OBJ)/,$(SOURCED)): $$(SRCR)/$$(notdir $$(basename $$@)).cpp
-$(addprefix $(OBJ)/,$(HEADERED)): $$(SRCR)/$$(notdir $$(basename $$@)).hpp
+
+$(addprefix $(OBJ)/,$(SOURCED)): $$(subst $$(OBJ),$$(SRCR),$$(basename $$@)).cpp
+$(addprefix $(OBJ)/,$(HEADERED)): $$(subst $$(OBJ),$$(SRCR),$$(basename $$@)).hpp
 $(addprefix $(OBJ)/,$(OBJECTS)): $$($$(basename $$@)_REQS)
 
 $(RIBOBJS): $(PCHOBJ)
