@@ -15,17 +15,13 @@ namespace Events
         EVENT_CATEGORY(EngineEnum::App)
         EVENT_HAPPEN()
     };
-
-    std::ostream& operator<<(std::ostream& out, const WindowClosedEvent& e)
-    {
-        return out << "WindowClosedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const WindowClosedEvent& e);
 
     class RIB_API WindowMovedEvent : public EngineEvent<WindowMovedEvent>
     {
         friend std::ostream& operator<<(std::ostream& out, const WindowMovedEvent& e);
     public:
-        constexpr WindowMovedEvent(double x, double y)
+        constexpr WindowMovedEvent(double x = 0, double y = 0)
             : m_WindowX(x), m_WindowY(y) {}
 
         EVENT_CATEGORY(EngineEnum::App)
@@ -36,20 +32,13 @@ namespace Events
     private:
         double m_WindowX, m_WindowY;
     };
-
-    std::ostream& operator<<(std::ostream& out, const WindowMovedEvent& e)
-    {
-        return out << "WindowMovedEvent{"
-            << "X: " << e.GetX() << ", Y: " << e.GetY() << ", "
-            << EngineCategoryToPrintable(e.GetCategory())
-            << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const WindowMovedEvent& e);
 
     class RIB_API WindowResizedEvent : public EngineEvent<WindowResizedEvent>
     {
         friend std::ostream& operator<<(std::ostream& out, const WindowResizedEvent& e);
     public:
-        constexpr WindowResizedEvent(double width, double height)
+        constexpr WindowResizedEvent(double width = 0, double height = 0)
             : m_Width(width), m_Height(height) {}
 
         EVENT_CATEGORY(EngineEnum::App)
@@ -60,14 +49,7 @@ namespace Events
     private:
         double m_Width, m_Height;
     };
-
-    std::ostream& operator<<(std::ostream& out, const WindowResizedEvent& e)
-    {
-        return out << "WindowMovedEvent{"
-            << "Width: " << e.GetWidth() << ", Height: " << e.GetHeight() << ", "
-            << EngineCategoryToPrintable(e.GetCategory())
-            << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const WindowResizedEvent& e);
 
     class RIB_API WindowSelectedEvent : public EngineEvent<WindowSelectedEvent>
     {
@@ -78,11 +60,7 @@ namespace Events
         EVENT_CATEGORY(EngineEnum::App)
         EVENT_HAPPEN()
     };
-
-    std::ostream& operator<<(std::ostream& out, const WindowSelectedEvent& e)
-    {
-        return out << "WindowSelectedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const WindowSelectedEvent& e);
 
     class RIB_API WindowUnselectedEvent : public EngineEvent<WindowUnselectedEvent>
     {
@@ -93,11 +71,7 @@ namespace Events
         EVENT_CATEGORY(EngineEnum::App)
         EVENT_HAPPEN()
     };
-
-    std::ostream& operator<<(std::ostream& out, const WindowUnselectedEvent& e)
-    {
-        return out << "WindowUnselectedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const WindowUnselectedEvent& e);
 
     class RIB_API AppTickedEvent : public EngineEvent<AppTickedEvent>
     {
@@ -108,11 +82,7 @@ namespace Events
         EVENT_CATEGORY(EngineEnum::App)
         EVENT_HAPPEN()
     };
-
-    std::ostream& operator<<(std::ostream& out, const AppTickedEvent& e)
-    {
-        return out << "AppTickedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const AppTickedEvent& e);
 
     class RIB_API AppUpdatedEvent : public EngineEvent<AppUpdatedEvent>
     {
@@ -123,11 +93,7 @@ namespace Events
         EVENT_CATEGORY(EngineEnum::App)
         EVENT_HAPPEN()
     };
-
-    std::ostream& operator<<(std::ostream& out, const AppUpdatedEvent& e)
-    {
-        return out << "AppUpdatedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const AppUpdatedEvent& e);
 
     class RIB_API AppRenderedEvent : public EngineEvent<AppRenderedEvent>
     {
@@ -138,12 +104,7 @@ namespace Events
         EVENT_CATEGORY(EngineEnum::App)
         EVENT_HAPPEN()
     };
-
-    std::ostream& operator<<(std::ostream& out, const AppRenderedEvent& e)
-    {
-        return out << "AppRenderedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
-
+    extern std::ostream& operator<<(std::ostream& out, const AppRenderedEvent& e);
 } // namespace Events
 } // namespace Ribbon
 

@@ -27,10 +27,7 @@ namespace Events
         EVENT_HAPPEN()
     };
 
-    std::ostream& operator<<(std::ostream& out, const MouseButtonPressedEvent& e)
-    {
-        return out << "MouseButtonPressedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const MouseButtonPressedEvent& e);
 
     class RIB_API MouseButtonReleasedEvent : public MouseButtonEvent<MouseButtonReleasedEvent>
     {
@@ -42,10 +39,7 @@ namespace Events
         EVENT_HAPPEN()
     };
 
-    std::ostream& operator<<(std::ostream& out, const MouseButtonReleasedEvent& e)
-    {
-        return out << "MouseButtonReleasedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const MouseButtonReleasedEvent& e);
 
     class RIB_API MouseScrolledEvent : public EngineEvent<MouseScrolledEvent>
     {
@@ -63,10 +57,7 @@ namespace Events
         double m_XOffset, m_YOffset;
     };
     
-    std::ostream& operator<<(std::ostream& out, const MouseScrolledEvent& e)
-    {
-        return out << "MouseScrolledEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const MouseScrolledEvent& e);
 
     class RIB_API MouseMovedEvent : public EngineEvent<MouseMovedEvent>
     {
@@ -84,10 +75,7 @@ namespace Events
         double m_MouseX, m_MouseY;
     };
     
-    std::ostream& operator<<(std::ostream& out, const MouseMovedEvent& e)
-    {
-        return out << "MouseMovedEvent{" << EngineCategoryToPrintable(e.GetCategory()) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const MouseMovedEvent& e);
 } // namespace Events
 } // namespace Ribbon
 

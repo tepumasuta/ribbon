@@ -14,15 +14,7 @@ namespace Events
         None = 0, App, Input, Keyboard, Mouse, MouseButton, SIZE
     };
     using EngineCategory = Categories::Category<EngineEnum, uint_fast8_t>;
-    using namespace std::string_literals;
-    std::array EngineEnumRepresentations{
-        "None"s,
-        "App"s,
-        "Input"s,
-        "Keyboard"s,
-        "Mouse"s,
-        "MouseButton"s,
-    };
+    extern std::array<std::string, 6UL> EngineEnumRepresentations;
 
     constexpr Categories::PrintableCategory<
         EngineEnum,

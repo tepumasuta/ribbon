@@ -30,15 +30,7 @@ namespace Events
     private:
         uint_fast32_t m_RepeatCount;
     };
-
-    std::ostream& operator<<(std::ostream& out, const KeyPressedEvent& e)
-    {
-        return out
-            << "KeyPressedEvent{" << (e.m_Handled ? "Handled" : "Unhandled") << ", "
-            << "KeyCode: `" << e.m_KeyCode << "`, " << "Repeats: " << e.m_RepeatCount << ", "
-            << EngineCategoryToPrintable(e.GetCategory())
-            << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const KeyPressedEvent& e);
 
     class RIB_API KeyReleasedEvent : public KeyEvent<KeyReleasedEvent>
     {
@@ -50,19 +42,7 @@ namespace Events
         EVENT_HAPPEN()
     };
 
-    std::ostream& operator<<(std::ostream& out, const KeyReleasedEvent& e)
-    {
-        return out
-            << "KeyReleasedEvent{" << (e.m_Handled ? "Handled" : "Unhandled") << ", "
-            << "KeyCode: `" << e.m_KeyCode << "`, "
-            << Categories::PrintableCategory<EngineEnum, uint_fast8_t, EngineEnumRepresentations.size()>(
-                e.GetCategory(),
-                Enumerations::PrintableEnumeration<EngineEnum, EngineEnumRepresentations.size()>(
-                    EngineEnum::None,
-                    EngineEnumRepresentations
-                )
-            ) << "}";
-    }
+    extern std::ostream& operator<<(std::ostream& out, const KeyReleasedEvent& e);
 } // namespace Events
 } // namespace Ribbon
 
