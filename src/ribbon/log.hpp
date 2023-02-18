@@ -30,7 +30,7 @@ namespace Ribbon
 #define RIB_ENGINE_ERROR CLOG(ERROR, ::Ribbon::Logger::GetEngineLogger()->id().c_str())
 #define RIB_ENGINE_FATAL CLOG(FATAL, ::Ribbon::Logger::GetEngineLogger()->id().c_str())
 
-// Engine log macros
+// Client log macros
 #define RIB_TRACE CLOG(TRACE, ::Ribbon::Logger::GetClientLogger()->id().c_str())
 #define RIB_INFO  CLOG(INFO, ::Ribbon::Logger::GetClientLogger()->id().c_str())
 #define RIB_WARN  CLOG(WARNING, ::Ribbon::Logger::GetClientLogger()->id().c_str())
