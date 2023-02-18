@@ -18,12 +18,6 @@ namespace Ribbon
         inline uint_fast32_t GetHeight() const override { return m_Data.Width; }
 
         // Window attributes
-        void SetWindowClosedEventCallback(const EventCallback& fn) override { m_Data.WindowClosed = fn; }
-        void SetWindowMovedEventCallback(const EventCallback& fn) override { m_Data.WindowMoved = fn; }
-        void SetWindowResizedEventCallback(const EventCallback& fn) override { m_Data.WindowResized = fn; }
-        void SetWindowSelectedEventCallback(const EventCallback& fn) override { m_Data.WindowSelected = fn; }
-        void SetWindowUnselectedEventCallback(const EventCallback& fn) override { m_Data.WindowUnselected = fn; }
-
         void SetVSync(bool enabled) override;
         bool IsVSync() const override;
     private:
@@ -38,11 +32,9 @@ namespace Ribbon
             uint_fast32_t Width, Height;
             bool VSync;
 
-            EventCallback WindowClosed;
-            EventCallback WindowMoved;
-            EventCallback WindowResized;
-            EventCallback WindowSelected;
-            EventCallback WindowUnselected;
+            Window::WindowEventData& EventData;
+
+            WindowData(Window::WindowEventData& eventData) : EventData(eventData) {}
         };
 
         WindowData m_Data;
