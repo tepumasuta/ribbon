@@ -22,15 +22,13 @@ namespace Events
         friend std::ostream& operator<<(std::ostream& out, const WindowMovedEvent& e);
     public:
         constexpr WindowMovedEvent(double x = 0, double y = 0)
-            : m_WindowX(x), m_WindowY(y) {}
+            : WindowX(x), WindowY(y) {}
 
         EVENT_CATEGORY(EngineEnum::App)
         EVENT_HAPPEN()
 
-        constexpr inline double GetX() const { return m_WindowX; }
-        constexpr inline double GetY() const { return m_WindowY; }
-    private:
-        double m_WindowX, m_WindowY;
+    public:
+        double WindowX, WindowY;
     };
     extern std::ostream& operator<<(std::ostream& out, const WindowMovedEvent& e);
 
@@ -39,15 +37,13 @@ namespace Events
         friend std::ostream& operator<<(std::ostream& out, const WindowResizedEvent& e);
     public:
         constexpr WindowResizedEvent(double width = 0, double height = 0)
-            : m_Width(width), m_Height(height) {}
+            : Width(width), Height(height) {}
 
         EVENT_CATEGORY(EngineEnum::App)
         EVENT_HAPPEN()
 
-        constexpr inline double GetWidth() const { return m_Width; }
-        constexpr inline double GetHeight() const { return m_Height; }
-    private:
-        double m_Width, m_Height;
+    public:
+        double Width, Height;
     };
     extern std::ostream& operator<<(std::ostream& out, const WindowResizedEvent& e);
 

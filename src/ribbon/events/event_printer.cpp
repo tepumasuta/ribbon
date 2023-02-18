@@ -26,7 +26,7 @@ namespace Events
     std::ostream& operator<<(std::ostream& out, const WindowMovedEvent& e)
     {
         return out << "WindowMovedEvent{"
-            << "X: " << e.GetX() << ", Y: " << e.GetY() << ", "
+            << "X: " << e.WindowX << ", Y: " << e.WindowY << ", "
             << EngineCategoryToPrintable(e.GetCategory())
             << "}";
     }
@@ -34,7 +34,7 @@ namespace Events
     std::ostream& operator<<(std::ostream& out, const WindowResizedEvent& e)
     {
         return out << "WindowMovedEvent{"
-            << "Width: " << e.GetWidth() << ", Height: " << e.GetHeight() << ", "
+            << "Width: " << e.Height << ", Height: " << e.Width << ", "
             << EngineCategoryToPrintable(e.GetCategory())
             << "}";
     }
@@ -68,8 +68,8 @@ namespace Events
     std::ostream& operator<<(std::ostream& out, const KeyPressedEvent& e)
     {
         return out
-            << "KeyPressedEvent{" << (e.m_Handled ? "Handled" : "Unhandled") << ", "
-            << "KeyCode: `" << e.m_KeyCode << "`, " << "Repeats: " << e.m_RepeatCount << ", "
+            << "KeyPressedEvent{" << (e.Handled ? "Handled" : "Unhandled") << ", "
+            << "KeyCode: `" << e.KeyCode << "`, " << "Repeats: " << e.RepeatCount << ", "
             << EngineCategoryToPrintable(e.GetCategory())
             << "}";
     }
@@ -77,8 +77,8 @@ namespace Events
     std::ostream& operator<<(std::ostream& out, const KeyReleasedEvent& e)
     {
         return out
-            << "KeyReleasedEvent{" << (e.m_Handled ? "Handled" : "Unhandled") << ", "
-            << "KeyCode: `" << e.m_KeyCode << "`, "
+            << "KeyReleasedEvent{" << (e.Handled ? "Handled" : "Unhandled") << ", "
+            << "KeyCode: `" << e.KeyCode << "`, "
             << Categories::PrintableCategory<EngineEnum, uint_fast8_t, EngineEnumRepresentations.size()>(
                 e.GetCategory(),
                 Enumerations::PrintableEnumeration<EngineEnum, EngineEnumRepresentations.size()>(

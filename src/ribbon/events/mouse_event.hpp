@@ -10,17 +10,20 @@ namespace Events
     class RIB_API MouseButtonEvent : public EngineEvent<E>
     {
     protected:
+        constexpr explicit MouseButtonEvent() {}
         constexpr MouseButtonEvent(uint_fast8_t button)
-            : m_Button(button) {}
+            : Button(button) {}
 
         EVENT_CATEGORY(EngineEnum::Input, EngineEnum::Mouse, EngineEnum::MouseButton)
-        uint_fast8_t m_Button;
+    public:
+        uint_fast8_t Button;
     };
 
     class RIB_API MouseButtonPressedEvent : public MouseButtonEvent<MouseButtonPressedEvent>
     {
         friend std::ostream& operator<<(std::ostream& out, const MouseButtonPressedEvent& e);
     public:
+        constexpr MouseButtonPressedEvent() : MouseButtonEvent() {}
         constexpr MouseButtonPressedEvent(uint_fast8_t button)
             : MouseButtonEvent(button) {}
         
@@ -33,6 +36,7 @@ namespace Events
     {
         friend std::ostream& operator<<(std::ostream& out, const MouseButtonReleasedEvent& e);
     public:
+        constexpr MouseButtonReleasedEvent() : MouseButtonEvent() {}
         constexpr MouseButtonReleasedEvent(uint_fast8_t button)
             : MouseButtonEvent(button) {}
         
@@ -45,16 +49,14 @@ namespace Events
     {
         friend std::ostream& operator<<(std::ostream& out, const MouseScrolledEvent& e);
     public:
+        constexpr MouseScrolledEvent() {}
         constexpr MouseScrolledEvent(double xOffset, double YOffset)
-            : m_XOffset(xOffset), m_YOffset(YOffset) {}
-
-        constexpr inline double GetXOffset() const { return m_XOffset; }
-        constexpr inline double GetYOffset() const { return m_YOffset; }
+            : XOffset(xOffset), YOffset(YOffset) {}
 
         EVENT_CATEGORY(EngineEnum::Input, EngineEnum::Mouse)
         EVENT_HAPPEN()
-    private:
-        double m_XOffset, m_YOffset;
+    public:
+        double XOffset, YOffset;
     };
     
     extern std::ostream& operator<<(std::ostream& out, const MouseScrolledEvent& e);
@@ -63,16 +65,14 @@ namespace Events
     {
         friend std::ostream& operator<<(std::ostream& out, const MouseMovedEvent& e);
     public:
+        constexpr MouseMovedEvent() {}
         constexpr MouseMovedEvent(double xOffset, double YOffset)
-            : m_MouseX(xOffset), m_MouseY(YOffset) {}
-
-        constexpr inline double GetX() const { return m_MouseX; }
-        constexpr inline double GetY() const { return m_MouseY; }
+            : MouseX(xOffset), MouseY(YOffset) {}
 
         EVENT_CATEGORY(EngineEnum::Input, EngineEnum::Mouse)
         EVENT_HAPPEN()
-    private:
-        double m_MouseX, m_MouseY;
+    public:
+        double MouseX, MouseY;
     };
     
     extern std::ostream& operator<<(std::ostream& out, const MouseMovedEvent& e);

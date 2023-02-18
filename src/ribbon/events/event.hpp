@@ -44,12 +44,12 @@ namespace Events
     {
     public:
         virtual void Happen() = 0;
-        virtual Listener<E>*& Subscribe(Listener<E>& listener) final
+        virtual Listener<E>*& Subscribe(Listener<E>& listener) const final
         {
             m_Listeners.emplace_back(&listener);
             return m_Listeners.back();
         }
-        virtual void Unsubscribe(const Listener<E>& listener) final
+        virtual void Unsubscribe(const Listener<E>& listener) const final
         {
             for (auto& ptr: m_Listeners)
             {
@@ -60,7 +60,7 @@ namespace Events
                 }
             }
         }
-        virtual void Unsubscribe(Listener<E>*& listener) final
+        virtual void Unsubscribe(Listener<E>*& listener) const final
         {
             listener = nullptr;
         }
@@ -78,14 +78,14 @@ namespace Events
                 }
             }
         }
-        std::vector<Listener<E>*> m_Listeners;
+        mutable std::vector<Listener<E>*> m_Listeners;
     };
 
     template<class E>
     class RIB_API Retranslator : public Listener<E>, public Event<E>
     {
     public:
-        virtual void Happen() final = 0;
+        virtual void Happen() final { RIB_ASSERT(false, "Happen function should'nt be callable on Retranslators"); };
     };
 
 
@@ -100,7 +100,8 @@ namespace Events
         };
     protected:
         constexpr EngineEvent() {}
-        bool m_Handled = false;
+    public:
+        bool Handled = false;
     };
 
 } // namespace event
