@@ -14,6 +14,7 @@ EASYLOGGING:=$(VENDOR)/easyloggingpp/src
 INCLUDE:=-I$(VENDOR)/glfw/include/
 PCHSRC:=$(SRCR)/pch
 WINDOWHEADERS=$(SRCR)/window.hpp
+EVENTHEADERS=$(EVENTS)/event.hpp $(EVENTS)/app_event.hpp $(EVENTS)/key_event.hpp $(EVENTS)/mouse_event.hpp
 ifeq ($(CC),g++)
 PCHOBJ:=$(PCHSRC)/ribpch.hpp.gch
 endif
@@ -31,10 +32,11 @@ OBJECTS:=$(RIBOBJS) $(VENDOROBJS)
 
 all: $(PCHOBJ) $(BINARY)
 
-$(OBJ)/app_REQS:=$(SRCR)/common.hpp $(EVENTS)/event.hpp $(UTILS)/category.hpp $(UTILS)/enum.hpp $(WINDOWHEADERS)
+$(OBJ)/app_REQS:=$(SRCR)/common.hpp $(UTILS)/category.hpp $(UTILS)/enum.hpp $(WINDOWHEADERS) $(EVENTHEADERS)
 $(OBJ)/log_REQS:=$(SRCR)/common.hpp $(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h
 $(OBJ)/vendor/easylogging++_REQS:=$(EASYLOGGING)/easylogging++.cc $(EASYLOGGING)/easylogging++.h
-$(OBJ)/platform/linux/linux_window_REQS:=$(SRCR)/window.hpp
+$(OBJ)/platform/linux/linux_window_REQS:=$(SRCR)/window.hpp $(EVENTHEADERS)
+$(OBJ)/events/event_printer_REQS:=$(EVENTHEADERS)
 .SECONDEXPANSION:
 
 
