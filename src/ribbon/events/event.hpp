@@ -43,11 +43,13 @@ namespace Events
     class RIB_API Event
     {
     public:
+        using ListenerPointer = uint_fast32_t;
+    public:
         virtual void Happen() = 0;
-        virtual Listener<E>*& Subscribe(Listener<E>& listener) const final
+        virtual ListenerPointer Subscribe(Listener<E>& listener) const final
         {
             m_Listeners.emplace_back(&listener);
-            return m_Listeners.back();
+            return m_Listeners.size() - 1;
         }
         virtual void Unsubscribe(const Listener<E>& listener) const final
         {
@@ -60,9 +62,9 @@ namespace Events
                 }
             }
         }
-        virtual void Unsubscribe(Listener<E>*& listener) const final
+        virtual void Unsubscribe(ListenerPointer listenerPtr) const final
         {
-            listener = nullptr;
+            m_Listeners[listenerPtr] = nullptr;
         }
     protected:
         constexpr Event() {}

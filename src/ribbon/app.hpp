@@ -15,7 +15,7 @@ namespace Ribbon
     private:
         std::unique_ptr<Window> m_Window;
         bool m_Running = true;
-        Listener<Events::WindowClosedEvent>* m_WindowClosedSubscriptionPtr;
+        Events::WindowClosedEvent::ListenerPointer m_WindowClosedSubscriptionPtr;
     };
 
     // Should be defined in CLIENT
