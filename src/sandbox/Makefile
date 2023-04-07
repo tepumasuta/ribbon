@@ -1,7 +1,7 @@
 include ${CONFIGFILE}
 
 BINARY=$(BIN)/sandbox
-LINK:=-L../../bin/ -lribbon
+LINK:=-Wl,-rpath,'$$ORIGIN'/. -L../../bin/ -lribbon
 OBJECTS:=sandbox.o
 SOURCED:=sandbox.o
 HEADERED:=
