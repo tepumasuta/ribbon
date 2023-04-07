@@ -16,17 +16,16 @@ namespace Events
     using EngineCategory = Categories::Category<EngineEnum, uint_fast8_t>;
     extern std::array<std::string, 6UL> EngineEnumRepresentations;
 
-    constexpr Categories::PrintableCategory<
+    using EnginePrintableCategory = Categories::PrintableCategory<
         EngineEnum,
         uint_fast8_t,
         static_cast<std::size_t>(EngineEnum::SIZE)
-    > EngineCategoryToPrintable(EngineCategory&& category)
+    >;
+
+    constexpr EnginePrintableCategory EngineCategoryToPrintable(EngineCategory&& category)
     {
-        return Categories::PrintableCategory<
-            EngineEnum,
-            uint_fast8_t,
-            static_cast<std::size_t>(EngineEnum::SIZE)
-        >(category, Enumerations::PrintableEnumeration<
+        return EnginePrintableCategory(
+            category, Enumerations::PrintableEnumeration<
             EngineEnum,
             static_cast<std::size_t>(EngineEnum::SIZE)
          >(EngineEnum::None, EngineEnumRepresentations));
@@ -43,15 +42,12 @@ namespace Events
     class RIB_API Event
     {
     public:
-        using ListenerPointer = uint_fast32_t;
-    public:
         virtual void Happen() = 0;
-        virtual ListenerPointer Subscribe(Listener<E>& listener) const final
+        virtual void Subscribe(Listener<E>& listener) final
         {
             m_Listeners.emplace_back(&listener);
-            return m_Listeners.size() - 1;
         }
-        virtual void Unsubscribe(const Listener<E>& listener) const final
+        virtual void Unsubscribe(const Listener<E>& listener) final
         {
             for (auto& ptr: m_Listeners)
             {
@@ -62,32 +58,32 @@ namespace Events
                 }
             }
         }
-        virtual void Unsubscribe(ListenerPointer listenerPtr) const final
-        {
-            m_Listeners[listenerPtr] = nullptr;
-        }
     protected:
         constexpr Event() {}
         virtual void Notify(E* ptr)
         {
-            for (std::size_t i = 0, j = 0; i < m_Listeners.size(); i++)
+            std::size_t newSize = 0;
+            for (std::size_t i = 0; i < m_Listeners.size(); i++)
             {
                 const auto& link = m_Listeners[i];
                 if (link)
                 {
-                    m_Listeners[j++] = link;
+                    m_Listeners[newSize++] = link;
                     link->OnEvent(*ptr);
                 }
             }
+            m_Listeners.resize(newSize);
         }
-        mutable std::vector<Listener<E>*> m_Listeners;
+        virtual std::vector<Listener<E>*>& GetListeners(E* ptr) final { (void)ptr; return m_Listeners; }
+    protected:
+        std::vector<Listener<E>*> m_Listeners;
     };
 
     template<class E>
-    class RIB_API Retranslator : public Listener<E>, public Event<E>
+    class RIB_API Retranslator : public Event<E>, public Listener<E>
     {
     public:
-        virtual void Happen() final { RIB_ASSERT(false, "Happen function should'nt be callable on Retranslators"); };
+        virtual void Happen() final { RIB_ASSERT(false, "Happen function shouldn't be callable on Retranslators"); };
     };
 
 
@@ -100,12 +96,39 @@ namespace Events
         {
             return GetCategory().IsSuperset(category);
         };
+    
     protected:
         constexpr EngineEvent() {}
     public:
         bool Handled = false;
     };
 
+    template<typename E>
+    class RIB_API EngineRetranslator : public Retranslator<E>
+    {
+    public:
+        virtual void OnEvent(E& event) override { Notify(&event); }
+    protected:
+        virtual void Notify(E* eventPtr) override
+        {
+            std::size_t newSize = 0;
+            for (std::size_t i = 0; i < this->m_Listeners.size(); i++)
+            {
+                const auto& link = this->m_Listeners[i];
+                if (link)
+                {
+                    this->m_Listeners[newSize++] = link;
+                    if (!eventPtr->Handled)
+                        link->OnEvent(*eventPtr);
+                }
+            }
+            this->m_Listeners.resize(newSize);
+
+            if (!eventPtr->Handled)
+                HandleEvent(*eventPtr);
+        }
+        virtual void HandleEvent(E& eventPtr) { (void)eventPtr; }
+    };
 } // namespace event
 } // namespace Ribbon
 

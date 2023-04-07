@@ -7,6 +7,7 @@
 #include <string>
 #include <ostream>
 #include <functional>
+#include <iterator>
 
 #include "log.hpp"
 

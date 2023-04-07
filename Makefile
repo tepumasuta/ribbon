@@ -45,7 +45,7 @@ pure:
 $(LIB): ribbon
 
 clean:
-	-rm -f obj/*.o obj/events/*.o $(PLATFORMOBJ)/*.o $(BINARIES)
+	-rm -f obj/*.o obj/events/*.o obj/layers/*.o $(PLATFORMOBJ)/*.o $(BINARIES)
 
 clean-vendor:
 	-rm -f obj/vendor/*.o
@@ -56,10 +56,12 @@ clean-pch:
 endif
 
 clean-all: clean clean-vendor clean-pch
+clean-non-vendor: clean clean-pch
 
 create-obj-infrastructure:
 	if [ ! -d "$(OBJ)" ]; then mkdir "$(OBJ)"; fi
 	if [ ! -d "$(OBJ)/vendor" ]; then mkdir "$(OBJ)/vendor"; fi
 	if [ ! -d "$(OBJ)/events" ]; then mkdir "$(OBJ)/events"; fi
+	if [ ! -d "$(OBJ)/layers" ]; then mkdir "$(OBJ)/layers"; fi
 	if [ ! -d "$(OBJ)/platform" ]; then mkdir "$(OBJ)/platform"; fi
 	if [ ! -d "$(PLATFORMOBJ)" ]; then mkdir "$(PLATFORMOBJ)"; fi

@@ -32,19 +32,19 @@ namespace Ribbon
         virtual uint_fast32_t GetWidth() const = 0;
 
         // Window attributes
-        const Events::WindowClosedEvent& GetWindowClosedEvent() { return m_EventData.WindowClosedEvent; }
-        const Events::WindowMovedEvent& GetWindowMovedEvent() { return m_EventData.WindowMovedEvent; }
-        const Events::WindowResizedEvent& GetWindowResizedEvent() { return m_EventData.WindowResizedEvent; }
-        const Events::WindowSelectedEvent& GetWindowSelectedEvent() { return m_EventData.WindowSelectedEvent; }
-        const Events::WindowUnselectedEvent& GetWindowUnselectedEvent() { return m_EventData.WindowUnselectedEvent; }
+        Events::WindowClosedEvent& GetWindowClosedEvent() { return m_EventData.WindowClosedEvent; }
+        Events::WindowMovedEvent& GetWindowMovedEvent() { return m_EventData.WindowMovedEvent; }
+        Events::WindowResizedEvent& GetWindowResizedEvent() { return m_EventData.WindowResizedEvent; }
+        Events::WindowSelectedEvent& GetWindowSelectedEvent() { return m_EventData.WindowSelectedEvent; }
+        Events::WindowUnselectedEvent& GetWindowUnselectedEvent() { return m_EventData.WindowUnselectedEvent; }
 
-        const Events::KeyPressedEvent& GetKeyPressedEvent() { return m_EventData.KeyPressedEvent; }
-        const Events::KeyReleasedEvent& GetKeyReleasedEvent() { return m_EventData.KeyReleasedEvent; }        
+        Events::KeyPressedEvent& GetKeyPressedEvent() { return m_EventData.KeyPressedEvent; }
+        Events::KeyReleasedEvent& GetKeyReleasedEvent() { return m_EventData.KeyReleasedEvent; }
         
-        const Events::MouseButtonPressedEvent& GetMouseButtonPressedEvent() { return m_EventData.MouseButtonPressedEvent; }
-        const Events::MouseButtonReleasedEvent& GetMouseButtonReleasedEvent() { return m_EventData.MouseButtonReleasedEvent; }
-        const Events::MouseMovedEvent& GetMouseMovedEvent() { return m_EventData.MouseMovedEvent; }
-        const Events::MouseScrolledEvent& GetMouseScrolledEvent() { return m_EventData.MouseScrolledEvent; }
+        Events::MouseButtonPressedEvent& GetMouseButtonPressedEvent() { return m_EventData.MouseButtonPressedEvent; }
+        Events::MouseButtonReleasedEvent& GetMouseButtonReleasedEvent() { return m_EventData.MouseButtonReleasedEvent; }
+        Events::MouseMovedEvent& GetMouseMovedEvent() { return m_EventData.MouseMovedEvent; }
+        Events::MouseScrolledEvent& GetMouseScrolledEvent() { return m_EventData.MouseScrolledEvent; }
 
         virtual void SetVSync(bool enabled) = 0;
         virtual bool IsVSync() const = 0;
