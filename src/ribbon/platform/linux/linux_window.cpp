@@ -1,6 +1,9 @@
 #include "pch/ribpch.hpp"
 #include "linux_window.hpp"
 
+#include <glad/glad.h>
+
+
 namespace Ribbon
 {
     static bool s_GLFWInitialized = false;
@@ -40,6 +43,8 @@ namespace Ribbon
 
         m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        RIB_ENGINE_ASSERT(status, "Failed to initialize Glad!");
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 
