@@ -3,9 +3,15 @@ include ${CONFIG}
 
 SUBPROJECTS=sandbox ribbon
 export BASEDIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+ifeq ($(TARGET),DEBUG)
+export BUILDDIR:=$(BASEDIR)/build/debug
+endif
+ifeq ($(TARGET),RELEASE)
+export BUILDDIR:=$(BASEDIR)/build/release
+endif
 export SRC:=$(BASEDIR)/src
-export OBJ:=$(BASEDIR)/obj
-export BIN:=$(BASEDIR)/bin
+export OBJ:=$(BUILDDIR)/obj
+export BIN:=$(BUILDDIR)/bin
 export SRCR:=$(SRC)/ribbon
 export SRCS:=$(SRC)/sandbox
 export DINCLUDE:=-I$(SRCR) -I$(SRCS) -I$(SRC) -I$(SRCR)/vendor/easyloggingpp/src/
@@ -33,10 +39,11 @@ ifeq ($(ENABLE_ASSERTS),YES)
 DDEFINES+=-D RIB_ENABLE_ASSERTS
 endif
 
-.PHONY: pure $(SUBPROJECTS) clean clean-vendor clean-pch clean-all create-obj-infrastructure
+
+.PHONY: pure $(SUBPROJECTS) clean clean-vendor clean-pch clean-all create-infrastructure
 
 sandbox: $(LIB)
-$(SUBPROJECTS): create-obj-infrastructure
+$(SUBPROJECTS): create-infrastructure
 	$(MAKE) -C $(SRC)/$@
 
 pure:
@@ -45,10 +52,10 @@ pure:
 $(LIB): ribbon
 
 clean:
-	-rm -f obj/*.o obj/events/*.o obj/layers/*.o $(PLATFORMOBJ)/*.o $(BINARIES)
+	-rm -f $(OBJ)/*.o $(OBJ)/events/*.o $(OBJ)/layers/*.o $(PLATFORMOBJ)/*.o $(BINARIES)
 
 clean-vendor:
-	-rm -f obj/vendor/*.o
+	-rm -f $(OBJ)/vendor/*.o
 
 ifeq ($(CC),g++)
 clean-pch:
@@ -58,10 +65,6 @@ endif
 clean-all: clean clean-vendor clean-pch
 clean-non-vendor: clean clean-pch
 
-create-obj-infrastructure:
-	if [ ! -d "$(OBJ)" ]; then mkdir "$(OBJ)"; fi
-	if [ ! -d "$(OBJ)/vendor" ]; then mkdir "$(OBJ)/vendor"; fi
-	if [ ! -d "$(OBJ)/events" ]; then mkdir "$(OBJ)/events"; fi
-	if [ ! -d "$(OBJ)/layers" ]; then mkdir "$(OBJ)/layers"; fi
-	if [ ! -d "$(OBJ)/platform" ]; then mkdir "$(OBJ)/platform"; fi
-	if [ ! -d "$(PLATFORMOBJ)" ]; then mkdir "$(PLATFORMOBJ)"; fi
+create-infrastructure:
+	mkdir -p "$(OBJ)/vendor" "$(OBJ)/events" "$(OBJ)/layers" "$(PLATFORMOBJ)"\
+			 "$(BIN)"
